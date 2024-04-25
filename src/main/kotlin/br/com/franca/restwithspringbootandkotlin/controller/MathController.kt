@@ -14,6 +14,15 @@ class MathController {
         @PathVariable(value = "number-one") numberOne: String?,
         @PathVariable(value = "number-two") numberTwo: String?
     ): Double {
-        return 1.0
+        if (!isNumeric(numberOne) || !isNumeric(numberTwo)) throw Exception()
+        return convertDouble(numberOne) + convertDouble(numberTwo)
+    }
+
+    private fun convertDouble(numberOne: String?): Double {
+        return 0.0
+    }
+
+    private fun isNumeric(numberOne: String?): Boolean {
+        return false;
     }
 }
