@@ -13,7 +13,7 @@ class PersonController {
 
     @Autowired
     private lateinit var service: PersonService
-
+    // se não informar o produces, por default produces é json
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAll(): List<Person> {
         return service.findAll()
