@@ -1,5 +1,6 @@
 package br.com.franca.restwithspringbootandkotlin.helper
 
+import br.com.franca.restwithspringbootandkotlin.controller.dto.v1.PersonDTO
 import br.com.franca.restwithspringbootandkotlin.helper.ObjectMapperHelper.writeStringAsObject
 import br.com.franca.restwithspringbootandkotlin.model.Person
 import br.com.franca.restwithspringbootandkotlin.service.PersonService
@@ -50,5 +51,28 @@ object PersonHelper {
     "address": "Address_$number",
     "gender": "Male"
     }"""
+    }
+
+    fun getDefaultPersonDTO(): PersonDTO {
+        val string = getDefaultPersonString()
+        return getPersonDTO(string)
+    }
+
+    private fun getPersonDTO(string: String): PersonDTO {
+        return writeStringAsObject(string, PersonDTO::class.java)
+            ?.orElseThrow {
+                IllegalArgumentException(
+                    "Error writeStringAsObject someString: $string someClass: ${PersonDTO::class.java}"
+                )
+            } as PersonDTO
+    }
+
+    fun getPersonDTOList(elements: Int): ArrayList<PersonDTO> {
+        val persons = ArrayList<PersonDTO>()
+        for (i in 1..elements) {
+            val string = getCustomizePersonString(i);
+            persons.add(getPersonDTO(string))
+        }
+        return persons;
     }
 }
