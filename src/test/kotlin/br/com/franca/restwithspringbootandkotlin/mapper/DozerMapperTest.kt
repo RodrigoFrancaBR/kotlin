@@ -1,6 +1,7 @@
 package br.com.franca.restwithspringbootandkotlin.mapper
 
 import br.com.franca.restwithspringbootandkotlin.controller.dto.v1.PersonDTO
+import br.com.franca.restwithspringbootandkotlin.helper.PersonDTOHelper
 import br.com.franca.restwithspringbootandkotlin.helper.PersonHelper
 import br.com.franca.restwithspringbootandkotlin.model.Person
 import org.junit.jupiter.api.Assertions
@@ -41,7 +42,7 @@ class DozerMapperTest {
 
     @Test
     fun parseObjectDTO() {
-        val personDTO = PersonHelper.getDefaultPersonDTO()
+        val personDTO = PersonDTOHelper.getDefaultPersonDTO()
         val person = DozerMapper.parseObject(personDTO, Person::class.java)
         Assertions.assertEquals(0, person.id)
         Assertions.assertEquals("Default first name", person.firstName)
@@ -52,7 +53,7 @@ class DozerMapperTest {
 
     @Test
     fun parseListObjectsDTO() {
-        val personDTOList = PersonHelper.getPersonDTOList(5)
+        val personDTOList = PersonDTOHelper.getPersonDTOList(5)
         val outputList = DozerMapper.parseListObjects(personDTOList, Person::class.java)
         val personOne = outputList[0]
 
