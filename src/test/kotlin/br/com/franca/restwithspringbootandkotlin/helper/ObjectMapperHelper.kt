@@ -3,9 +3,10 @@ package br.com.franca.restwithspringbootandkotlin.helper
 import br.com.franca.restwithspringbootandkotlin.service.PersonService
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import java.util.*
 import java.util.logging.Logger
+
 
 object ObjectMapperHelper {
 
@@ -14,8 +15,7 @@ object ObjectMapperHelper {
 
     private fun getMapper(): ObjectMapper {
         return ObjectMapper()
-            // .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true)
-            .registerModule(JavaTimeModule())
+            .registerKotlinModule()
     }
 
     fun writeStringAsObject(someString: String?, someClass: Class<*>?): Optional<Any>? {

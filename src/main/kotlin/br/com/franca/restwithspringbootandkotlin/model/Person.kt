@@ -8,17 +8,17 @@ data class Person(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0,
+    var id: Long,
 
     @Column(name = "first_name", nullable = false, length = 80)
-    var firstName: String = "",
+    var firstName: String,
 
     @Column(name = "last_name", nullable = false, length = 80)
-    var lastName: String = "",
+    var lastName: String,
 
     @Column(nullable = false, length = 100)
-    var address: String = "",
+    var address: String,
 
     @Column(nullable = false, length = 6)
-    var gender: String = ""
+    var gender: String
 )

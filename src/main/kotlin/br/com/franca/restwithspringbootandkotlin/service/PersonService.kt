@@ -1,11 +1,14 @@
 package br.com.franca.restwithspringbootandkotlin.service
 
+import br.com.franca.restwithspringbootandkotlin.controller.dto.v1.CreatePersonRequestDTO
+import br.com.franca.restwithspringbootandkotlin.controller.dto.v1.PersonResponseDTO
 import br.com.franca.restwithspringbootandkotlin.exceptions.ResourceNotFoundException
-import br.com.franca.restwithspringbootandkotlin.model.Person
+import br.com.franca.restwithspringbootandkotlin.mapper.IPersonMapper
 import br.com.franca.restwithspringbootandkotlin.repository.PersonRepository
+import org.slf4j.LoggerFactory.getLogger
+import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.logging.Logger
 
 
 @Service
@@ -14,34 +17,36 @@ class PersonService {
     @Autowired
     private lateinit var repository: PersonRepository
 
-    // Usando PersonService::class.java.name, você obtém o nome da classe PersonService como uma string, que pode ser incluída nos logs para identificar sua origem.
-    private val logger = Logger.getLogger(PersonService::class.java.name)
-    fun findAll(): List<Person> {
-        logger.info("Finding all people!")
-        return repository.findAll()
+    @Autowired
+    private lateinit var mapper: IPersonMapper
+
+    private val logger = getLogger(PersonService::class.java)
+    fun findAll(): List<PersonResponseDTO> {
+        logger.info("finding all people")
+        return mapper.toPersonResponseDTOList(repository.findAll())
     }
 
-    fun findById(id: Long): Person {
-        logger.info("Finding one person!")
-        return repository.findById(id)
-            .orElseThrow { ResourceNotFoundException("No records found for this ID!") }
-    }
-
-    fun create(person: Person): Person {
-        logger.info("Creating one person with name ${person.firstName}!")
-        return repository.save(person)
-    }
-
-    fun update(person: Person): Person {
-        logger.info("Updating one person with ID ${person.id}!")
-        val entity = repository.findById(person.id)
+    fun findById(id: Long): PersonResponseDTO {
+        logger.info("finding one person id: {}", id)
+        return repository.findById(id).map(mapper::toPersonResponseDTO)
             .orElseThrow { ResourceNotFoundException("No records found for this ID!") }
 
-        entity.firstName = person.firstName
-        entity.lastName = person.lastName
-        entity.address = person.address
-        entity.gender = person.gender
-        return repository.save(entity)
+//        return repository.findById(id).map { entidadeA -> mapper.toDTO(entidadeA) }
+//            .orElseThrow { ResourceNotFoundException("No records found for this ID!") }
+    }
+
+    fun create(createPersonRequest: CreatePersonRequestDTO): PersonResponseDTO {
+        logger.info("Creating one person with name: {}", createPersonRequest.firstName)
+        val person = mapper.toPerson(createPersonRequest)
+        return mapper.toPersonResponseDTO(repository.save(person))
+    }
+
+    fun update(id: Long, createPersonRequest: CreatePersonRequestDTO): PersonResponseDTO {
+        logger.info("Updating one person with ID: {}", id)
+        val person = repository.findById(id)
+            .orElseThrow { ResourceNotFoundException("No records found for this ID!") }
+        BeanUtils.copyProperties(createPersonRequest, person)
+        return mapper.toPersonResponseDTO(repository.save(person))
     }
 
     fun delete(id: Long) {
