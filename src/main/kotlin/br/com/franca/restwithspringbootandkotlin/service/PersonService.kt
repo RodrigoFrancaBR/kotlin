@@ -10,7 +10,9 @@ import br.com.franca.restwithspringbootandkotlin.repository.PersonRepository
 import org.slf4j.LoggerFactory.getLogger
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.hateoas.CollectionModel
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PagedResourcesAssembler
+import org.springframework.hateoas.PagedModel
 import org.springframework.stereotype.Service
 
 
@@ -22,22 +24,25 @@ class PersonService {
 
     @Autowired
     private lateinit var mapper: IPersonMapper // tem que converter dominio e entidade jpa
+
     @Autowired
-    private lateinit var assembler: PersonResponseModelAssembler // converter para dto
+    private lateinit var modelAssembler: PersonResponseModelAssembler // converter para dto
+
+    @Autowired
+    private lateinit var pagedAssembler: PagedResourcesAssembler<br.com.franca.restwithspringbootandkotlin.model.Person>
 
 
     private val logger = getLogger(PersonService::class.java)
-    fun findAll(): CollectionModel<PersonResponseDTO> {
+
+    fun findAll(pageable: Pageable): PagedModel<PersonResponseDTO> {
         logger.info("finding all people")
-        return assembler.toCollectionModel(repository.findAll())
-////        val toPersonResponseDTOList = mapper.toPersonResponseDTOList(repository.findAll())
-////        val collectionModel = CollectionModel<PersonResponseDTO>(toPersonResponseDTOList)
-//        return collectionModel
+        val entities = repository.findAll(pageable)
+        return pagedAssembler.toModel(entities, modelAssembler)
     }
 
     fun findById(id: Long): PersonResponseDTO {
         logger.info("finding one person id: {}", id)
-        return repository.findById(id).map(assembler::toModel)
+        return repository.findById(id).map(modelAssembler::toModel)
             .orElseThrow { ResourceNotFoundException("No records found for this ID!") }
     }
 
@@ -47,7 +52,7 @@ class PersonService {
         // aplicar alguma regra de negócio nesse objeto, por exemplo validar a idade > 18 etc...
         val entity = mapper.toEntity(domainEntity)
         val save = repository.save(entity)
-        return assembler.toModel(save)
+        return modelAssembler.toModel(save)
     }
 
     fun update(id: Long, createPersonRequest: CreatePersonRequestDTO): PersonResponseDTO {
@@ -55,7 +60,7 @@ class PersonService {
         val person = repository.findById(id)
             .orElseThrow { ResourceNotFoundException("No records found for this ID!") }
         BeanUtils.copyProperties(createPersonRequest, person)
-        return assembler.toModel(repository.save(person))
+        return modelAssembler.toModel(repository.save(person))
     }
 
     fun delete(id: Long) {
