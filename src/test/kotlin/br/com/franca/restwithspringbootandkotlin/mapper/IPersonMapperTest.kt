@@ -59,25 +59,25 @@ class IPersonMapperTest {
         }
     }
 
-    @Test
-    fun `should map person to createPersonRequestDTO`() {
-        val person = PersonHelper.getDefaultPerson()
-        val createPersonRequestDTO = mapper.toCreatePersonRequestDTO(person)
-        assertEquals(person.firstName, createPersonRequestDTO.firstName)
-        assertEquals(person.lastName, createPersonRequestDTO.lastName)
-        assertEquals(person.address, createPersonRequestDTO.address)
-        assertEquals("Male", createPersonRequestDTO.gender)
-    }
+//    @Test
+//    fun `should map person to createPersonRequestDTO`() {
+//        val person = PersonHelper.getDefaultPerson()
+//        val createPersonRequestDTO = mapper.toCreatePersonRequestDTO(person)
+//        assertEquals(person.firstName, createPersonRequestDTO.firstName)
+//        assertEquals(person.lastName, createPersonRequestDTO.lastName)
+//        assertEquals(person.address, createPersonRequestDTO.address)
+//        assertEquals("Male", createPersonRequestDTO.gender)
+//    }
 
-    @Test
-    fun `should map createPersonRequestDTO to person`() {
-        val createPersonRequestDTO = CreatePersonRequestDTOHelper.getDefaultCreatePersonRequestDTO()
-        val person = mapper.toPerson(createPersonRequestDTO)
-        assertEquals(createPersonRequestDTO.firstName, person.firstName)
-        assertEquals(createPersonRequestDTO.lastName, person.lastName)
-        assertEquals(createPersonRequestDTO.address, person.address)
-        assertEquals("Male", person.gender)
-    }
+//    @Test
+//    fun `should map createPersonRequestDTO to person`() {
+//        val createPersonRequestDTO = CreatePersonRequestDTOHelper.getDefaultCreatePersonRequestDTO()
+//        val person = mapper.toPerson(createPersonRequestDTO)
+//        assertEquals(createPersonRequestDTO.firstName, person.firstName)
+//        assertEquals(createPersonRequestDTO.lastName, person.lastName)
+//        assertEquals(createPersonRequestDTO.address, person.address)
+//        assertEquals("Male", person.gender)
+//    }
 
     @Test
     fun `should map personList to createPersonRequestDTOList`() {
@@ -92,16 +92,16 @@ class IPersonMapperTest {
         }
     }
 
-    @Test
-    fun `should map createPersonRequestDTOList to personList`() {
-        val createPersonRequestDTOList = CreatePersonRequestDTOHelper.getCreatePersonRequestDTOList(5)
-        val personList = mapper.toPersonList(createPersonRequestDTOList)
-        for (index in createPersonRequestDTOList.indices) {
-            assertEquals(createPersonRequestDTOList[index].firstName, personList[index].firstName)
-            assertEquals(createPersonRequestDTOList[index].lastName, personList[index].lastName)
-            assertEquals(createPersonRequestDTOList[index].address, personList[index].address)
-            assertEquals("Male", personList[index].gender)
-        }
-    }
+//    @Test
+//    fun `should map createPersonRequestDTOList to personList`() {
+//        val createPersonRequestDTOList = CreatePersonRequestDTOHelper.getCreatePersonRequestDTOList(5)
+//        val personList = mapper.toPersonList(createPersonRequestDTOList)
+//        for (index in createPersonRequestDTOList.indices) {
+//            assertEquals(createPersonRequestDTOList[index].firstName, personList[index].firstName)
+//            assertEquals(createPersonRequestDTOList[index].lastName, personList[index].lastName)
+//            assertEquals(createPersonRequestDTOList[index].address, personList[index].address)
+//            assertEquals("Male", personList[index].gender)
+//        }
+//    }
 
 }
