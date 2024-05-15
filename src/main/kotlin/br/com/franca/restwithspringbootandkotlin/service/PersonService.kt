@@ -10,6 +10,7 @@ import br.com.franca.restwithspringbootandkotlin.repository.PersonRepository
 import org.slf4j.LoggerFactory.getLogger
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.hateoas.CollectionModel
 import org.springframework.stereotype.Service
 
 
@@ -26,9 +27,12 @@ class PersonService {
 
 
     private val logger = getLogger(PersonService::class.java)
-    fun findAll(): List<PersonResponseDTO> {
+    fun findAll(): CollectionModel<PersonResponseDTO> {
         logger.info("finding all people")
-        return mapper.toPersonResponseDTOList(repository.findAll())
+        return assembler.toCollectionModel(repository.findAll())
+////        val toPersonResponseDTOList = mapper.toPersonResponseDTOList(repository.findAll())
+////        val collectionModel = CollectionModel<PersonResponseDTO>(toPersonResponseDTOList)
+//        return collectionModel
     }
 
     fun findById(id: Long): PersonResponseDTO {

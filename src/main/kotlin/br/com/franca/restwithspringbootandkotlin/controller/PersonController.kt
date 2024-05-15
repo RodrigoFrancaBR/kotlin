@@ -4,6 +4,7 @@ import br.com.franca.restwithspringbootandkotlin.controller.dto.v1.CreatePersonR
 import br.com.franca.restwithspringbootandkotlin.controller.dto.v1.PersonResponseDTO
 import br.com.franca.restwithspringbootandkotlin.service.PersonService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.hateoas.CollectionModel
 import org.springframework.http.HttpStatus.*
 import org.springframework.web.bind.annotation.*
 
@@ -15,7 +16,7 @@ class PersonController {
     private lateinit var service: PersonService
 
     @GetMapping
-    fun findAll(): List<PersonResponseDTO> = service.findAll()
+    fun findAll(): CollectionModel<PersonResponseDTO> = service.findAll()
 
     @GetMapping("/{id}")
     fun findById(@PathVariable("id") id: Long): PersonResponseDTO = service.findById(id)
