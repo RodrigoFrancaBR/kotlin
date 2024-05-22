@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PagedResourcesAssembler
 import org.springframework.hateoas.PagedModel
 import org.springframework.stereotype.Service
+import java.util.*
 
 
 @Service
@@ -46,10 +47,18 @@ class PersonService {
             .orElseThrow { ResourceNotFoundException("No records found for this ID!") }
     }
 
+    fun findByName(pageable: Pageable, firstName: String): PagedModel<PersonResponseDTO> {
+        logger.info("finding one person firstName: {}", firstName)
+
+        val findByFirstName = repository.findByFirstName(pageable, firstName)
+        return Optional.ofNullable(findByFirstName)
+            .map { e -> pagedAssembler.toModel(e, modelAssembler) }
+            .orElseThrow { ResourceNotFoundException("No records found for this ID!") }
+    }
+
     fun create(createPersonRequest: CreatePersonRequestDTO): PersonResponseDTO {
         logger.info("Creating one person with name: {}", createPersonRequest.firstName)
         val domainEntity: Person = mapper.toDomainEntity(createPersonRequest)
-        // aplicar alguma regra de negócio nesse objeto, por exemplo validar a idade > 18 etc...
         val entity = mapper.toEntity(domainEntity)
         val save = repository.save(entity)
         return modelAssembler.toModel(save)
@@ -68,5 +77,13 @@ class PersonService {
         val entity = repository.findById(id)
             .orElseThrow { ResourceNotFoundException("No records found for this ID!") }
         repository.delete(entity)
+    }
+
+    fun findByNameLike(pageable: Pageable, letter: String): PagedModel<PersonResponseDTO> {
+        logger.info("finding one person firstName: {}", letter)
+        val findByFirstName = repository.findByFirstNameContaining(pageable, letter)
+        return Optional.ofNullable(findByFirstName)
+            .map { e -> pagedAssembler.toModel(e, modelAssembler) }
+            .orElseThrow { ResourceNotFoundException("No records found for this ID!") }
     }
 }
