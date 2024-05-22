@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
 import org.springframework.hateoas.PagedModel
 import org.springframework.http.HttpStatus.*
+import org.springframework.http.MediaType
 import org.springframework.http.MediaType.*
 import org.springframework.web.bind.annotation.*
 
@@ -32,15 +33,11 @@ class PersonController {
         pageable: Pageable,
     ): PagedModel<PersonResponseDTO> = service.findByName(pageable, firstName)
 
-    @GetMapping("/findPersonByNameLike/{letter}", produces = [APPLICATION_JSON_VALUE])
-    fun findByNameLikeJson(
-        @PathVariable("letter") letter: String,
-        @PageableDefault(page = 0, size = 10, sort = ["id"], direction = Sort.Direction.ASC)
-        pageable: Pageable,
-    ): PagedModel<PersonResponseDTO> = service.findByNameLike(pageable, letter)
-
-    @GetMapping("/findPersonByNameLike/{letter}", produces = [APPLICATION_XML_VALUE])
-    fun findByNameLikeXML(
+    @GetMapping(
+        "/findPersonByNameLike/{letter}",
+        produces = [MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun findByNameLike(
         @PathVariable("letter") letter: String,
         @PageableDefault(page = 0, size = 10, sort = ["id"], direction = Sort.Direction.ASC)
         pageable: Pageable,
