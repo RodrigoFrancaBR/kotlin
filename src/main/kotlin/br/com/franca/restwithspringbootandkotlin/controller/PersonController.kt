@@ -9,9 +9,10 @@ import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
 import org.springframework.hateoas.PagedModel
 import org.springframework.http.HttpStatus.*
-import org.springframework.http.MediaType
 import org.springframework.http.MediaType.*
 import org.springframework.web.bind.annotation.*
+import br.com.franca.restwithspringbootandkotlin.util.MediaType as MediaTypeUtil
+
 
 @RestController
 @RequestMapping("/person")
@@ -35,7 +36,7 @@ class PersonController {
 
     @GetMapping(
         "/findPersonByNameLike/{letter}",
-        produces = [MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE]
+        produces = [APPLICATION_XML_VALUE, APPLICATION_JSON_VALUE, MediaTypeUtil.APPLICATION_X_YAML]
     )
     fun findByNameLike(
         @PathVariable("letter") letter: String,
@@ -47,7 +48,10 @@ class PersonController {
     fun findById(@PathVariable("id") id: Long): PersonResponseDTO = service.findById(id)
 
     @ResponseStatus(CREATED)
-    @PostMapping
+    @PostMapping(
+        produces = [APPLICATION_XML_VALUE, APPLICATION_JSON_VALUE, MediaTypeUtil.APPLICATION_X_YAML],
+        consumes = [APPLICATION_JSON_VALUE, MediaTypeUtil.APPLICATION_X_YAML]
+    )
     fun create(@RequestBody request: CreatePersonRequestDTO) = service.create(request)
 
     @ResponseStatus(OK)
