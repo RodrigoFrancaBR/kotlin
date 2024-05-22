@@ -14,7 +14,6 @@ class WebConfig : WebMvcConfigurer {
     override fun configureContentNegotiation(configurer: ContentNegotiationConfigurer) {
         configurer.favorParameter(true)
             .parameterName(MEDIA_TYPE)
-            .ignoreAcceptHeader(true)
             .useRegisteredExtensionsOnly(false)
             .defaultContentType(MediaType.APPLICATION_JSON)
             .mediaType(JSON_MEDIA_TYPE, MediaType.APPLICATION_JSON)
