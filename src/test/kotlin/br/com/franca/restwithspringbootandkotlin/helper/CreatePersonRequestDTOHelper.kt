@@ -1,7 +1,6 @@
 package br.com.franca.restwithspringbootandkotlin.helper
 
 import br.com.franca.restwithspringbootandkotlin.controller.dto.v1.CreatePersonRequestDTO
-import br.com.franca.restwithspringbootandkotlin.controller.dto.v1.PersonResponseDTO
 
 object CreatePersonRequestDTOHelper : AbstractHelper() {
     fun getDefaultCreatePersonRequestDTO(): CreatePersonRequestDTO {

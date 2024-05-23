@@ -2,7 +2,7 @@ package br.com.franca.restwithspringbootandkotlin.helper
 
 import br.com.franca.restwithspringbootandkotlin.model.Person
 
-object PersonHelper : AbstractHelper() {
+object PersonModelEntityHelper : AbstractHelper() {
 
     fun getDefaultPerson(): Person {
         val string = getDefaultPersonString()
