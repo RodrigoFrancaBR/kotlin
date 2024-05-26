@@ -15,7 +15,7 @@ import org.springframework.data.web.PagedResourcesAssembler
 import org.springframework.hateoas.PagedModel
 import org.springframework.stereotype.Service
 import java.util.*
-
+import br.com.franca.restwithspringbootandkotlin.model.Person as PersonModelEntity
 
 @Service
 class PersonService {
@@ -30,7 +30,7 @@ class PersonService {
     private lateinit var modelAssembler: PersonResponseModelAssembler // converter para dto
 
     @Autowired
-    private lateinit var pagedAssembler: PagedResourcesAssembler<br.com.franca.restwithspringbootandkotlin.model.Person>
+    private lateinit var pagedAssembler: PagedResourcesAssembler<PersonModelEntity>
 
 
     private val logger = getLogger(PersonService::class.java)
@@ -38,7 +38,9 @@ class PersonService {
     fun findAll(pageable: Pageable): PagedModel<PersonResponseDTO> {
         logger.info("finding all people")
         val entities = repository.findAll(pageable)
-        return pagedAssembler.toModel(entities, modelAssembler)
+
+        val toModel = pagedAssembler.toModel(entities, modelAssembler)
+        return toModel
     }
 
     fun findById(id: Long): PersonResponseDTO {

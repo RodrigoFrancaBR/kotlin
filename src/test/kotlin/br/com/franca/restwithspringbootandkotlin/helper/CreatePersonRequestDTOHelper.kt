@@ -2,6 +2,9 @@ package br.com.franca.restwithspringbootandkotlin.helper
 
 import br.com.franca.restwithspringbootandkotlin.controller.dto.v1.CreatePersonRequestDTO
 
+typealias RequestList = ArrayList<CreatePersonRequestDTO>
+typealias Request = CreatePersonRequestDTO
+
 object CreatePersonRequestDTOHelper : AbstractHelper() {
     fun getDefaultCreatePersonRequestDTO(): CreatePersonRequestDTO {
         val string = getDefaultPersonString()
@@ -28,7 +31,7 @@ object CreatePersonRequestDTOHelper : AbstractHelper() {
     }
 
     fun getCreatePersonRequestDTOList(elements: Int): List<CreatePersonRequestDTO> {
-        val persons = ArrayList<CreatePersonRequestDTO>()
+        val persons = RequestList()
         for (i in 1..elements) {
             val string = getCustomizePersonString(i);
             persons.add(getCreatePersonRequestDTO(string))

@@ -25,7 +25,10 @@ class PersonController {
     fun findAll(
         @PageableDefault(page = 0, size = 10, sort = ["id"], direction = Sort.Direction.ASC)
         pageable: Pageable,
-    ): PagedModel<PersonResponseDTO> = service.findAll(pageable)
+    ): PagedModel<PersonResponseDTO> {
+        return service.findAll(pageable)
+    }
+
 
     @GetMapping("/findPersonByName/{firstName}")
     fun findByName(
